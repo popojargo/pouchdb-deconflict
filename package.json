@@ -1,0 +1,30 @@
+{
+  "name": "pouchdb-deconflict",
+  "version": "1.0.0",
+  "description": "A PouchDB utility to resolve conflicts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/popojargo/pouchdb-deconflict.git"
+  },
+  "keywords": [
+    "couchdb",
+    "cloudant",
+    "pouchdb",
+    "conflicts",
+    "resolver"
+  ],
+  "author": "Alexis Côté",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/popojargo/pouchdb-deconflict/issues"
+  },
+  "homepage": "https://github.com/popojargo/pouchdb-deconflict#readme",
+  "dependencies": {
+    "pouchdb": "^6.0.6",
+    "vargs": "^0.1.0"
+  }
+}
