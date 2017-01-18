@@ -249,24 +249,32 @@ function nominated(db, docid, rev, callback) {
  * Resolve the conflicts by deleting the loosing revision. This can be executed 
  * on the whole database, on on certains docs.
  * @param {nanoDB} db	The database object.
- * @param {Array|String|Null} docid [null] Determine the id/ids to be resoluted.
- *  If null, it will be applied to the whole database.
- * If it's null, it will be applied to every documents.
- * @param {Function} callback [null] The callback function executed after the resolution.
+ * @param {String} docid [null] The id of the document to resolve.
+ * @param {Function} callback [function(){}] The callback function executed after the resolution.
  */
-function blindResolution() { 		//Parameter binding
+function blindResolution() {
+	//Parameter binding
+	if (arguments == null || arguments.length == 0 || arguments.length != 3)
+		throw new TypeError("You need to provide valid arguments for this function.");
+		
 	var args = new (Args)(arguments);
+	if (args == null || args.first == null || typeof args.first !== "object")
+		throw new TypeError("The first parameter must be a PouchDB object");
+	
 	var db = args.first;
 	var callback = args.callback;
-	var ids = args.last;
+	var id = args.last;
+
 	//Parameter validation
-	if (typeof ids === "boolean")
-		ids = null;
+	if (typeof id === "boolean")
+		id = null;
+
 	//We convert to an array if it has 1 or more values.
-	if (ids != null && !Array.isArray(ids))
-		ids = [ids];
+	if (id != null && !Array.isArray(id))
+		id = [id];
+
 	//We need to create the design documents to get all the conflicts
-	if (ids === null) {
+	if (id === null) {
 		var designDoc = {_id: "_design/resolver",
 			views: {getConflicts: {map: function (doc) {
 						if (doc._conflicts)
@@ -303,8 +311,13 @@ function blindResolution() { 		//Parameter binding
 	}
 }
 
+function resolutionByRev(db,id,rev){
+	
+}
+
 /**
- * Creates the documents or updates them if they are already existing.
+ * Creates
+ *  the documents or updates them if they are already existing.
  * @param {PouchDB} db	The PouchDB object of the database.
  * @param {Array} docs	An array of documents to create or update.	
  * @param {Function} callback	The callback function that will be called with an information message as the first parameter.
@@ -350,7 +363,7 @@ function createDocuments(db, docs, callback) {
 }
 
 module.exports = {
-	blindResolution: blindResolution,
-	nominated: nominated,
-	latestWins: latestWins
+	blindResolution: blindResolution
+//	nominated: nominated,
+//	latestWins: latestWins
 };
